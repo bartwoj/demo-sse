@@ -1,0 +1,6 @@
+services:
+  demo-sse:
+    image: 'demo-sse:latest'
+    build: .
+    ports:
+      - "8080:8080"
