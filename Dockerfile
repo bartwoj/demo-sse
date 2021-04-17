@@ -1,9 +1,11 @@
+FROM maven:3-openjdk-14 AS build
+RUN mkdir /usr/src/project
+COPY . /usr/src/project
+WORKDIR /usr/src/project
+RUN mvn clean package -DskipTests
+
 FROM openjdk:14-jdk-alpine
-
-ARG JAR_FILE=target/*.jar
-
-WORKDIR /opt/app
-
-COPY ${JAR_FILE} app.jar
-
-ENTRYPOINT ["java","-jar","app.jar"]
+RUN mkdir /project
+COPY --from=build /usr/src/project/target/demo-sse-0.0.1-SNAPSHOT.jar /project/
+WORKDIR /project
+CMD java -jar demo-sse-0.0.1-SNAPSHOT.jar
